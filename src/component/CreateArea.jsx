@@ -1,15 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 
-function CreateArea() {
+function CreateArea(props) {
+  const [note, setNote] = useState({
+    title: "",
+    content: "",
+  });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setNote((prevNote) => {
+      return {
+        ...prevNote,
+        [name]: value,
+      };
+    });
+  }
+
+  function submitNote(event) {
+    props.onAdd(note);
+    setNote({
+      title: "",
+      content: "",
+    });
+    event.preventDefault();
+  }
+
   return (
     <div>
       <form>
-        <input name="title" placeholder="Title" />
-        <textarea name="content" placeholder="Take a note..." rows="3" />
-        <button>Add</button>
+        <input
+          name="title"
+          onChange={handleChange}
+          placeholder="Title"
+          value={note.title}
+        />
+        <textarea
+          name="content"
+          onChange={handleChange}
+          placeholder="Take a note..."
+          value={note.content}
+        />
+        <button onClick={submitNote}>Add</button>
       </form>
     </div>
   );
 }
 
 export default CreateArea;
+
+//CHALLENGE:
+//1. Implement the add note functionality.
+//- Create a constant that keeps track of the title and content.
+//- Pass the new note back to the App.
+//- Add new note to an array.
+//- Take array and render seperate Note components for each item.
